@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CP Editorial Coach UI Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="backdrop"></div>
+  <div class="app-shell">
+    <header class="topbar glass">
+      <div class="brand-wrap">
+        <div class="brand-mark">CP</div>
+        <div>
+          <p class="eyebrow" data-i18n="brandEyebrow">competitive programming coach</p>
+          <h1 class="brand-title">CP Editorial Coach</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="ghost-button" id="themeToggle" type="button">☾ <span data-i18n="theme">Theme</span></button>
+        <button class="ghost-button active" type="button" data-lang-btn="az">AZ</button>
+        <button class="ghost-button" type="button" data-lang-btn="en">EN</button>
+      </div>
+    </header>
+
+    <section class="hero glass">
+      <div class="hero-copy">
+        <span class="pill" data-i18n="heroBadge">editorial → understandable thinking</span>
+        <h2 data-i18n="heroTitle">From a confusing tutorial to a clear path, step by step.</h2>
+        <p data-i18n="heroDesc">
+          Paste a Codeforces link, pick your language, and reveal only as much help as you need.
+          The interface is built around spoiler-safe coaching.
+        </p>
+      </div>
+      <div class="hero-controls">
+        <label class="field-label" for="problemLink" data-i18n="linkLabel">Problem link</label>
+        <div class="search-row">
+          <input id="problemLink" type="url" placeholder="https://codeforces.com/problemset/problem/..." />
+          <button class="primary-button" id="analyzeButton" type="button" data-i18n="analyzeButton">Analyze</button>
+        </div>
+        <div class="toggle-row">
+          <div class="choice-group" id="modeChooser">
+            <button class="choice active" data-mode="guided" type="button" data-i18n="modeGuided">Guided mode</button>
+            <button class="choice" data-mode="direct" type="button" data-i18n="modeDirect">Fast track</button>
+          </div>
+          <button class="secondary-button" id="demoButton" type="button" data-i18n="loadDemo">Load demo session</button>
+        </div>
+        <div class="status-row">
+          <span class="status-dot"></span>
+          <span id="analysisStatus" data-i18n="waitingStatus">Waiting for a link</span>
+        </div>
+      </div>
+    </section>
+
+    <main class="workspace">
+      <aside class="panel glass left-panel">
+        <section class="card problem-card">
+          <div class="card-header">
+            <div>
+              <p class="card-label" data-i18n="currentProblem">Current problem</p>
+              <h3 id="problemTitle">—</h3>
+            </div>
+            <span class="difficulty-pill" id="problemDifficulty">—</span>
+          </div>
+          <div class="meta-grid">
+            <div>
+              <span class="meta-label" data-i18n="contest">Contest</span>
+              <strong id="problemContest">—</strong>
+            </div>
+            <div>
+              <span class="meta-label" data-i18n="tags">Tags</span>
+              <strong id="problemTags">—</strong>
+            </div>
+            <div>
+              <span class="meta-label" data-i18n="goal">Goal</span>
+              <strong id="problemGoal">—</strong>
+            </div>
+            <div>
+              <span class="meta-label" data-i18n="language">Language</span>
+              <strong id="problemLanguage">AZ</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="card source-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="sources">Sources</p>
+              <h3 data-i18n="explanationSources">Explanation sources</h3>
+            </div>
+            <span class="mini-chip" data-i18n="ranked">ranked</span>
+          </div>
+          <div class="source-list" id="sourceList"></div>
+        </section>
+
+        <section class="card progress-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="progress">Progress</p>
+              <h3 data-i18n="unlockFlow">Unlock flow</h3>
+            </div>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <ul class="checkpoint-list" id="checkpointList"></ul>
+        </section>
+      </aside>
+
+      <section class="panel glass main-panel">
+        <section class="card conversation-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="coach">Coach</p>
+              <h3 data-i18n="sessionFeed">Session feed</h3>
+            </div>
+            <span class="mini-chip" id="modePill">Guided</span>
+          </div>
+          <div class="feed" id="feed">
+            <div class="message coach-message placeholder">
+              <p data-i18n="placeholderFeed">Paste a Codeforces link or load the demo to see the step-by-step coaching experience.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card actions-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="actions">Actions</p>
+              <h3 data-i18n="pickStep">Pick the next step</h3>
+            </div>
+            <span class="mini-chip" data-i18n="spoilerSafe">spoiler-safe</span>
+          </div>
+          <div class="action-grid" id="actionGrid"></div>
+        </section>
+
+        <section class="double-grid">
+          <section class="card code-card">
+            <div class="card-header compact">
+              <div>
+                <p class="card-label">C++</p>
+                <h3 data-i18n="solutionPanel">Solution panel</h3>
+              </div>
+              <button class="ghost-button small" id="copyCodeButton" type="button" data-i18n="copyCode">Copy code</button>
+            </div>
+            <pre id="codeBlock" class="code-block">// The C++ solution appears here when the user unlocks it.</pre>
+          </section>
+
+          <section class="card notes-card">
+            <div class="card-header compact">
+              <div>
+                <p class="card-label" data-i18n="yourIdea">Your idea</p>
+                <h3 data-i18n="checkReasoning">Check your reasoning</h3>
+              </div>
+              <span class="mini-chip" data-i18n="feedback">feedback</span>
+            </div>
+            <textarea id="ideaInput" placeholder="Write your own approach here..."></textarea>
+            <button class="secondary-button full-width" id="checkIdeaButton" type="button" data-i18n="checkIdea">Check my idea</button>
+            <div class="feedback-box" id="ideaFeedback">
+              <p data-i18n="feedbackPlaceholder">Type your reasoning and the coach will respond with a focused correction or confirmation.</p>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <aside class="panel glass right-panel">
+        <section class="card stats-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="sessionStats">Session stats</p>
+              <h3 data-i18n="focusPanel">Focus panel</h3>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span class="stat-title" data-i18n="openedSteps">Opened steps</span>
+              <strong id="openedSteps">0</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title" data-i18n="sourceConfidence">Source confidence</span>
+              <strong id="sourceConfidence">—</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title" data-i18n="spoilerLevel">Spoiler level</span>
+              <strong id="spoilerLevel" data-i18n="minimal">Minimal</strong>
+            </div>
+            <div class="stat-box">
+              <span class="stat-title" data-i18n="saveState">Save state</span>
+              <strong data-i18n="localStorage">Local</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="card history-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="recent">Recent</p>
+              <h3 data-i18n="recentLinks">Recent links</h3>
+            </div>
+            <button class="ghost-button small" id="clearHistoryButton" type="button" data-i18n="clear">Clear</button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+
+        <section class="card similar-card">
+          <div class="card-header compact">
+            <div>
+              <p class="card-label" data-i18n="practice">Practice</p>
+              <h3 data-i18n="similarProblems">Similar problems</h3>
+            </div>
+            <span class="mini-chip" data-i18n="expandable">expandable</span>
+          </div>
+          <div class="similar-list" id="similarList"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
